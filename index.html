@@ -1962,6 +1962,40 @@ h1, h2, h3, h4, h5, h6 {
 .dev-photo-wrap.no-photo { display: grid; place-items: center; background: var(--gradient-hero); color: #fff; font-size: 4rem; font-weight: 800; min-height: 220px; }
 .dev-photo-wrap.no-photo::after { content: 'ز'; }
 
+/* ---- Video player fullscreen ---- */
+.modal-top-btn.fs-btn:hover { background: var(--teal); color: #fff; transform: scale(1.08); }
+.video-modal-window.is-full,
+.video-modal-window:fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  border-radius: 0;
+  border: 0;
+  transform: none;
+  z-index: 1;
+}
+.video-modal-window.is-full .video-frame-aspect,
+.video-modal-window:fullscreen .video-frame-aspect {
+  aspect-ratio: auto;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+.video-modal-window.is-full .video-modal-footer-note,
+.video-modal-window:fullscreen .video-modal-footer-note { display: none; }
+.video-modal-window.is-full .video-modal-top,
+.video-modal-window:fullscreen .video-modal-top { padding: 8px 14px; }
+@media (orientation: landscape) and (max-height: 500px) {
+  .video-modal-backdrop { padding: 0; }
+  .video-modal-window { max-width: none; border-radius: 0; height: 100vh; height: 100dvh; }
+  .video-modal-window .video-frame-aspect { aspect-ratio: auto; flex: 1; min-height: 0; }
+  .video-modal-window .video-modal-footer-note { display: none; }
+  .video-modal-window .video-modal-top { padding: 6px 12px; }
+}
+
 /* ================================================================
    MOBILE SIZE FIT (phones only - no desktop changes)
    ================================================================ */
@@ -2477,6 +2511,10 @@ h1, h2, h3, h4, h5, h6 {
         <h3 id="videoModalTitle">مشغل الفيديو التعليمي</h3>
       </div>
       <div class="video-modal-actions">
+        <button class="modal-top-btn fs-btn" id="videoFullscreenBtn" onclick="toggleVideoFullscreen()" title="ملء الشاشة" aria-label="ملء الشاشة">
+          <svg viewBox="0 0 24 24" id="fsIconEnter"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <svg viewBox="0 0 24 24" id="fsIconExit" style="display:none"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+        </button>
         <button class="modal-top-btn" id="videoExternalOpenBtn" title="فتح في نافذة مستقلة">
           <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </button>
@@ -3283,7 +3321,42 @@ function openVideoPlayer(videoId, rawUrl, title, courseId, courseName) {
   showToast('info', `نتمنى لك مشاهدة مفيدة يا زميلنا العزيز`);
 }
 
+const videoModalWindow = document.querySelector('.video-modal-window');
+function syncFullscreenUi() {
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  const on = fsEl === videoModalWindow || videoModalWindow.classList.contains('pseudo-full');
+  videoModalWindow.classList.toggle('is-full', on);
+  document.getElementById('fsIconEnter').style.display = on ? 'none' : 'block';
+  document.getElementById('fsIconExit').style.display = on ? 'block' : 'none';
+}
+window.toggleVideoFullscreen = function() {
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEl || videoModalWindow.classList.contains('pseudo-full')) {
+    videoModalWindow.classList.remove('pseudo-full');
+    if (fsEl) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    syncFullscreenUi();
+    return;
+  }
+  const req = videoModalWindow.requestFullscreen || videoModalWindow.webkitRequestFullscreen;
+  if (req) {
+    Promise.resolve(req.call(videoModalWindow)).catch(() => {
+      videoModalWindow.classList.add('pseudo-full'); syncFullscreenUi();
+    });
+  } else {
+    /* iPhone Safari: no element fullscreen, so fill the viewport instead */
+    videoModalWindow.classList.add('pseudo-full');
+    syncFullscreenUi();
+  }
+};
+document.addEventListener('fullscreenchange', syncFullscreenUi);
+document.addEventListener('webkitfullscreenchange', syncFullscreenUi);
+
 window.closeVideoModal = function() {
+  if (document.fullscreenElement || document.webkitFullscreenElement) {
+    try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (e) {}
+  }
+  videoModalWindow.classList.remove('pseudo-full');
+  syncFullscreenUi();
   videoModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
   setTimeout(() => { videoIframePlayer.src = ''; }, 350);
