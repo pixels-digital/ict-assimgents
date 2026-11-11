@@ -1895,6 +1895,155 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px 26px !important;
   font-weight: 700 !important;
 }
+/* ================================================================
+   ENHANCED MOTION & MICRO-INTERACTIONS
+   ================================================================ */
+@keyframes cardEnter { from { opacity: 0; transform: translateY(36px) scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes popIn { from { opacity: 0; transform: scale(.4) rotate(-20deg); } to { opacity: 1; transform: none; } }
+@keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes particleRise {
+  0% { transform: translateY(0) scale(.6); opacity: 0; }
+  15% { opacity: .85; }
+  100% { transform: translateY(-115vh) scale(1.3); opacity: 0; }
+}
+@keyframes btnGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(96,165,250,.5); } 50% { box-shadow: 0 0 0 14px rgba(96,165,250,0); } }
+@keyframes statPop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
+@keyframes logoPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 var(--teal-glow); } 50% { transform: scale(1.08); box-shadow: 0 0 0 18px rgba(59,130,196,0); } }
+@keyframes overlayIn { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+@keyframes iconWiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+@keyframes slideDownIn { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: none; } }
+
+.card-enter { animation: cardEnter .65s cubic-bezier(.2,.8,.2,1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+
+.hero-section { position: relative; }
+.hero-content { position: relative; z-index: 2; }
+.hero-badge { animation: slideDownIn .7s .1s cubic-bezier(.2,.8,.2,1) backwards; }
+.hero-title { animation: fadeInUp .8s .25s cubic-bezier(.2,.8,.2,1) backwards; }
+.hero-subtitle { animation: fadeInUp .8s .4s cubic-bezier(.2,.8,.2,1) backwards; }
+.hero-actions-row { animation: fadeInUp .8s .55s cubic-bezier(.2,.8,.2,1) backwards; }
+.hero-stat-card { animation: fadeInScale .7s cubic-bezier(.2,.8,.2,1) backwards; }
+.hero-stat-card:nth-child(1) { animation-delay: .7s; }
+.hero-stat-card:nth-child(2) { animation-delay: .82s; }
+.hero-stat-card:nth-child(3) { animation-delay: .94s; }
+.gradient-text { background-size: 200% auto; animation: gradientShift 5s ease-in-out infinite; }
+.hero-actions-row .btn-primary { animation: btnGlow 2.6s ease-in-out infinite; }
+
+.hero-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.hero-particle { position: absolute; bottom: -20px; border-radius: 50%; background: rgba(255,255,255,.4); animation: particleRise linear infinite; }
+
+#scrollProgress {
+  position: fixed; top: 0; right: 0; left: 0; height: 3px; z-index: 10001;
+  background: linear-gradient(90deg, var(--accent), var(--teal-light), var(--navy-light));
+  transform-origin: right center; transform: scaleX(0); pointer-events: none;
+  box-shadow: 0 0 10px var(--teal-glow);
+}
+
+.splash-loading-screen .logo-icon-wrap { animation: logoPulse 1.4s ease-in-out infinite; }
+.logo-icon-wrap:hover { animation: iconWiggle .6s; }
+.nav-link:hover svg { animation: iconWiggle .5s; }
+.state-overlay-fullscreen { animation: overlayIn .5s cubic-bezier(.2,.8,.2,1); }
+.state-content-wrap { animation: fadeInScale .7s .1s cubic-bezier(.2,.8,.2,1) backwards; }
+.lock-overlay > * { animation: fadeInScale .6s cubic-bezier(.2,.8,.2,1) backwards; }
+.stat-pop { animation: statPop .45s ease; }
+
+.course-icon-badge { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.course-card:hover .course-icon-badge { transform: rotate(-8deg) scale(1.12); }
+.course-action-arrow { transition: transform .3s ease; }
+.course-card:hover .course-action-arrow { transform: translateX(-6px); }
+.social-icon-circle { animation: popIn .5s cubic-bezier(.2,.8,.2,1) backwards; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.social-icon-circle:hover { transform: translateY(-4px) rotate(8deg) scale(1.08); }
+
+.skeleton-card {
+  min-height: 190px; border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--border-light) 25%, var(--bg-card-hover) 50%, var(--border-light) 75%);
+  background-size: 200% 100%; animation: shimmerWave 1.4s linear infinite;
+  border: 1px solid var(--border-light);
+}
+.dev-photo-wrap.no-photo { display: grid; place-items: center; background: var(--gradient-hero); color: #fff; font-size: 4rem; font-weight: 800; min-height: 220px; }
+.dev-photo-wrap.no-photo::after { content: 'ز'; }
+
+/* ================================================================
+   MOBILE SIZE FIT (phones only - no desktop changes)
+   ================================================================ */
+@media (max-width: 600px) {
+  html { font-size: 15px; }
+  :root { --header-height: 62px; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .main-header { gap: 8px; padding: 0 12px; }
+  .header-logo { font-size: 1.1rem; gap: 8px; }
+  .logo-icon-wrap { width: 34px; height: 34px; border-radius: 10px; }
+  .logo-icon-wrap svg { width: 18px; height: 18px; }
+  .header-actions { gap: 6px; }
+  .icon-btn { width: 36px; height: 36px; }
+  .icon-btn svg { width: 17px; height: 17px; }
+  .chip-avatar { width: 30px; height: 30px; }
+  .admin-link-btn { padding: 7px; }
+
+  .hero-section { padding-left: 14px; padding-right: 14px; padding-bottom: 44px; }
+  .hero-badge { font-size: 0.78rem; padding: 7px 14px; margin-bottom: 16px; text-align: center; }
+  .hero-title { font-size: 1.9rem; }
+  .hero-subtitle { font-size: 0.95rem; margin-bottom: 24px; }
+  .hero-actions-row { gap: 10px; margin-bottom: 32px; }
+  .hero-actions-row .btn-primary, .hero-actions-row .btn-secondary {
+    width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.98rem;
+  }
+  .hero-stats-wrap { padding: 14px 10px; gap: 8px; }
+  .stat-icon-pill { width: 30px; height: 30px; }
+  .hero-stat-value { font-size: 1.55rem; }
+  .hero-stat-label { font-size: 0.72rem; }
+
+  .container { padding: 0 14px; }
+  .section { padding: 36px 0; }
+  .search-filter-section { margin: -18px auto 26px; }
+  .search-box-card { padding: 8px 10px; gap: 8px; }
+  .search-input-field { font-size: 0.92rem; min-width: 0; }
+
+  .welcome-banner, .voluntary-banner-box { flex-direction: column; text-align: center; padding: 18px 16px; gap: 12px; }
+  .welcome-icon-box { width: 48px; height: 48px; }
+
+  .cards-grid, .videos-grid-wrap, .attachments-grid { grid-template-columns: 1fr; gap: 16px; }
+  .course-card { padding: 18px; }
+  .filter-pill { font-size: 0.8rem; padding: 6px 12px; }
+
+  .about-initiative-box { padding: 26px 16px; border-radius: var(--radius-lg); }
+  .about-body-text { text-align: start; font-size: 0.93rem; }
+  .about-hadith-pill { border-radius: var(--radius-md); text-align: center; padding: 10px 14px; font-size: 0.88rem; }
+  .about-features-row { grid-template-columns: 1fr; }
+
+  .dev-card-wrapper { padding: 24px 16px; border-radius: var(--radius-lg); }
+  .dev-pill-role { font-size: 0.76rem; text-align: center; }
+  .dev-bio { font-size: 0.9rem; }
+  .dev-entity-tag { font-size: 0.78rem; }
+  .dev-dua-card { padding: 14px 16px; font-size: 0.88rem; }
+
+  .main-footer { padding: 40px 14px 20px; }
+  .footer-bottom-bar { font-size: 0.8rem; }
+
+  .back-to-top-fab { bottom: 76px; left: 12px; width: 40px; height: 40px; }
+  .mob-nav-item { padding: 6px 6px; font-size: 0.68rem; }
+
+  .lock-card-box { padding: 28px 18px; border-radius: var(--radius-lg); }
+  .lock-input-control { font-size: 0.95rem; }
+  .video-modal-backdrop { padding: 10px; }
+  .video-modal-top { padding: 12px 14px; }
+  .video-modal-title-row h3 { font-size: 0.98rem; }
+  .video-modal-footer-note { padding: 10px 14px; font-size: 0.8rem; }
+  .profile-modal-box { padding: 24px 16px; }
+  .policy-modal-box { padding: 22px 16px; }
+  .state-big-icon { width: 72px; height: 72px; }
+}
+@media (max-width: 380px) {
+  .hero-title { font-size: 1.65rem; }
+  .hero-stat-label { font-size: 0.66rem; }
+  .header-logo { font-size: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-enter, .hero-badge, .hero-title, .hero-subtitle, .hero-actions-row, .hero-stat-card,
+  .gradient-text, .hero-actions-row .btn-primary, .state-overlay-fullscreen, .state-content-wrap,
+  .lock-overlay > *, .social-icon-circle, .splash-loading-screen .logo-icon-wrap { animation: none !important; }
+  .hero-particles, #scrollProgress { display: none; }
+}
 </style>
 </head>
 <body>
@@ -2192,7 +2341,7 @@ h1, h2, h3, h4, h5, h6 {
 
     <div class="dev-card-wrapper anim-item">
       <div class="dev-photo-wrap">
-        <img src="ziad.jpg" alt="Ziad El-Dory" loading="lazy">
+        <img src="ziad.jpg" alt="Ziad El-Dory" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('no-photo')">
         <div class="dev-verified-badge" title="مطوّر موثّق">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
@@ -2400,10 +2549,19 @@ h1, h2, h3, h4, h5, h6 {
 </div>
 
 <!-- FIREBASE SCRIPTS -->
+<script>
+/* Safety net: never leave the splash screen stuck if a CDN fails */
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    var sp = document.getElementById('splashScreen');
+    if (sp) { sp.classList.add('fade-out'); setTimeout(function () { sp.remove(); }, 600); }
+  }, 6000);
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, getDoc, collection,
   onSnapshot, serverTimestamp, updateDoc, increment
@@ -2431,6 +2589,60 @@ let activeCourseFilter = '';
 let currentSearchTerm = '';
 let currentVideoSession = null;
 let heartbeatInterval = null;
+let hiddenCourseIds = new Set();
+let prevPlatformMode = '';
+let listenHintShown = false;
+const byOrder = (a, b) => (parseInt(a.order) || 999) - (parseInt(b.order) || 999);
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+function nl2br(str) { return escapeHtml(str).replace(/\n/g, '<br>'); }
+function safeUrl(u) {
+  if (!u) return '';
+  const v = String(u).trim();
+  if (/^(https?:\/\/|mailto:|tel:)/i.test(v)) return v;
+  if (/^[\w-]+(\.[\w-]+)+(\/|$)/.test(v)) return 'https://' + v;
+  return '';
+}
+const lastRenderSig = {};
+function shouldAnimate(key, items) {
+  const sig = items.map(i => i.id).join('|');
+  const changed = sig !== lastRenderSig[key];
+  lastRenderSig[key] = sig;
+  return changed;
+}
+function visibleVideos() { return allVideos.filter(v => !hiddenCourseIds.has(v.courseId)); }
+function visibleAttachments() { return allAttachments.filter(a => !hiddenCourseIds.has(a.courseId)); }
+function courseNameFor(item) {
+  const c = allCourses.find(x => x.id === item.courseId);
+  return (c && c.name) || item.courseName || 'مقرر عام';
+}
+function countCourseVideos(courseId) { return allVideos.filter(v => v.courseId === courseId).length; }
+function updateStats() {
+  animateCount('statCourses', allCourses.length);
+  animateCount('statVideos', visibleVideos().length);
+  animateCount('statFiles', visibleAttachments().length);
+}
+
+/* Resilient realtime listener: retries automatically if the connection/permissions fail */
+function listen(ref, onData, label) {
+  let retries = 0;
+  const start = () => {
+    onSnapshot(ref, (snap) => { retries = 0; onData(snap); }, (err) => {
+      console.warn('[listen:' + label + ']', err);
+      if (!listenHintShown) {
+        listenHintShown = true;
+        showToast('warning', 'تعذر تحميل بعض البيانات، جاري إعادة المحاولة تلقائياً...');
+      }
+      retries++;
+      setTimeout(start, Math.min(30000, 2500 * retries));
+    });
+  };
+  start();
+}
 
 const Toast = Swal.mixin({
   toast: true,
@@ -2441,7 +2653,7 @@ const Toast = Swal.mixin({
   customClass: { popup: 'creative-swal' }
 });
 
-function showToast(icon, title) { Toast.fire({ icon, title }); }
+function showToast(icon, title) { Toast.fire({ icon, title: escapeHtml(title) }); }
 
 // Theme
 const themeToggleBtn = document.getElementById('themeToggle');
@@ -2480,6 +2692,12 @@ window.addEventListener('scroll', () => {
 
   if (y > 350) backToTopFab.classList.add('visible');
   else backToTopFab.classList.remove('visible');
+
+  const bar = document.getElementById('scrollProgress');
+  if (bar) {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+  }
 }, { passive: true });
 
 window.scrollToSection = function(id) {
@@ -2521,44 +2739,35 @@ document.addEventListener('click', (e) => {
 function animateCount(id, target) {
   const el = document.getElementById(id);
   if (!el) return;
-  const targetNum = parseInt(target) || 0;
-  if (targetNum === 0) { el.textContent = '0'; return; }
-  let current = 0;
-  const duration = 1200;
-  const stepTime = 30;
-  const steps = duration / stepTime;
-  const incrementVal = Math.max(1, Math.ceil(targetNum / steps));
-  const timer = setInterval(() => {
-    current += incrementVal;
-    if (current >= targetNum) {
-      current = targetNum;
-      clearInterval(timer);
-    }
-    el.textContent = current;
-  }, stepTime);
+  const to = parseInt(target) || 0;
+  const from = parseInt(el.dataset.v || '0') || 0;
+  el.dataset.v = String(to);
+  if (el._raf) cancelAnimationFrame(el._raf);
+  if (from === to || prefersReduced) { el.textContent = to; return; }
+  const start = performance.now();
+  const dur = 900;
+  const tick = (now) => {
+    const p = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (p < 1) el._raf = requestAnimationFrame(tick);
+    else { el.classList.remove('stat-pop'); void el.offsetWidth; el.classList.add('stat-pop'); }
+  };
+  el._raf = requestAnimationFrame(tick);
 }
 
 function toDriveEmbedUrl(url) {
   if (!url) return '';
-  const cleanUrl = url.trim();
-  const drivePatterns = [
-    /\/file\/d\/([a-zA-Z0-9_-]+)/,
-    /id=([a-zA-Z0-9_-]+)/,
-    /\/d\/([a-zA-Z0-9_-]+)/,
-    /open\?id=([a-zA-Z0-9_-]+)/
-  ];
-  for (const p of drivePatterns) {
-    const match = cleanUrl.match(p);
-    if (match && match[1]) {
-      return `https://drive.google.com/file/d/${match[1]}/preview`;
-    }
+  const u = url.trim();
+  const yt = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{6,})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0`;
+  const vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  if (/drive\.google\.com|docs\.google\.com/.test(u)) {
+    const m = u.match(/\/file\/d\/([\w-]+)/) || u.match(/[?&]id=([\w-]+)/) || u.match(/\/d\/([\w-]+)/);
+    if (m && m[1]) return `https://drive.google.com/file/d/${m[1]}/preview`;
   }
-  const ytMatch = cleanUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]+)/);
-  if (ytMatch && ytMatch[1]) {
-    return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
-  }
-  if (cleanUrl.includes('/preview')) return cleanUrl;
-  return cleanUrl;
+  return u;
 }
 
 // Student Registration
@@ -2604,6 +2813,51 @@ regNameInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') handleRegistration();
 });
 
+/* ---- Auth helpers ---- */
+function waitForAuthInit() {
+  return new Promise((resolve) => {
+    const un = onAuthStateChanged(auth, (u) => { un(); resolve(u); });
+  });
+}
+async function ensureAuth() {
+  if (auth.currentUser) return auth.currentUser;
+  const existing = await waitForAuthInit();
+  if (existing) return existing;
+  const cred = await signInAnonymously(auth);
+  return cred.user;
+}
+
+/* Create the student doc once (keeps firstSeen), afterwards only bump lastSeen/visits */
+async function upsertStudent(name, bumpVisit = true) {
+  const user = await ensureAuth();
+  const ref = doc(db, 'users', user.uid);
+  let exists = false;
+  try { exists = (await getDoc(ref)).exists(); } catch (e) { /* ignore, fall through to setDoc */ }
+  if (exists) {
+    const upd = { lastSeen: serverTimestamp() };
+    if (name) upd.name = name;
+    if (bumpVisit) upd.visits = increment(1);
+    await updateDoc(ref, upd);
+  } else {
+    await setDoc(ref, { name, uid: user.uid, firstSeen: serverTimestamp(), lastSeen: serverTimestamp(), visits: 1 }, { merge: true });
+  }
+  return user;
+}
+
+/* Keeps the saved student linked to the live auth session (fixes mismatched uid / offline mode) */
+async function reconcileStudent() {
+  if (!currentStudent) return;
+  try {
+    const user = await upsertStudent(currentStudent.name, true);
+    currentUser = user;
+    if (currentStudent.uid !== user.uid || currentStudent.pending) {
+      currentStudent.uid = user.uid;
+      delete currentStudent.pending;
+      localStorage.setItem('creative-student', JSON.stringify(currentStudent));
+    }
+  } catch (e) { console.warn('reconcileStudent:', e); }
+}
+
 window.handleRegistration = async function() {
   const rawName = regNameInput.value.trim().replace(/\s+/g, ' ');
   if (!rawName) {
@@ -2625,27 +2879,18 @@ window.handleRegistration = async function() {
   `;
 
   try {
-    const cred = await signInAnonymously(auth);
-    currentUser = cred.user;
-
-    const studentObj = {
-      name: rawName,
-      uid: currentUser.uid,
-      firstSeen: serverTimestamp(),
-      lastSeen: serverTimestamp(),
-      visits: 1
-    };
-
-    await setDoc(doc(db, 'users', currentUser.uid), studentObj, { merge: true });
-    currentStudent = { name: rawName, uid: currentUser.uid };
+    const user = await upsertStudent(rawName, true);
+    currentUser = user;
+    currentStudent = { name: rawName, uid: user.uid };
     localStorage.setItem('creative-student', JSON.stringify(currentStudent));
     displayLoggedInState();
     showToast('success', `مرحباً بك يا ${words[0]} في CREATIVE!`);
   } catch(err) {
-    currentStudent = { name: rawName, uid: 'offline-' + Date.now() };
+    console.warn('registration:', err);
+    currentStudent = { name: rawName, uid: (auth.currentUser && auth.currentUser.uid) || ('offline-' + Date.now()), pending: true };
     localStorage.setItem('creative-student', JSON.stringify(currentStudent));
     displayLoggedInState();
-    showToast('success', `مرحباً بك يا ${words[0]}!`);
+    showToast('warning', `مرحباً بك يا ${words[0]}! سنعاود تسجيل بياناتك تلقائياً عند توفر الاتصال`);
   } finally {
     regSubmitBtn.disabled = false;
     regSubmitBtn.innerHTML = `
@@ -2703,8 +2948,8 @@ window.renameStudentProfile = async function() {
     currentStudent.name = trimmed;
     localStorage.setItem('creative-student', JSON.stringify(currentStudent));
     displayLoggedInState();
-    if (currentStudent.uid && !currentStudent.uid.startsWith('offline-')) {
-      try { await updateDoc(doc(db, 'users', currentStudent.uid), { name: trimmed }); } catch(e) {}
+    if (auth.currentUser) {
+      try { await updateDoc(doc(db, 'users', auth.currentUser.uid), { name: trimmed }); } catch(e) {}
     }
     closeProfileModal();
     showToast('success', 'تم تعديل الاسم بنجاح');
@@ -2721,62 +2966,73 @@ window.logoutStudent = function() {
     cancelButtonText: 'إلغاء',
     customClass: { popup: 'creative-swal', confirmButton: 'creative-swal-btn' },
     buttonsStyling: false
-  }).then((r) => {
-    if (r.isConfirmed) {
-      localStorage.removeItem('creative-student');
-      currentStudent = null;
-      closeProfileModal();
-      document.getElementById('userChip').style.display = 'none';
-      document.getElementById('welcomeBanner').style.display = 'none';
-      displayLockState();
-    }
+  }).then(async (r) => {
+    if (!r.isConfirmed) return;
+    if (videoModalBackdrop.classList.contains('open')) closeVideoModal();
+    localStorage.removeItem('creative-student');
+    currentStudent = null;
+    closeProfileModal();
+    document.getElementById('userChip').style.display = 'none';
+    document.getElementById('welcomeBanner').style.display = 'none';
+    displayLockState();
+    /* New anonymous identity so the next student never overwrites the previous one */
+    try { await signOut(auth); await signInAnonymously(auth); } catch(e) { console.warn('logout auth:', e); }
   });
 };
 
 // Real-Time Listeners
 function listenPlatformSettings() {
-  try {
-    const settingsRef = doc(db, 'platformSettings', 'main');
-    onSnapshot(settingsRef, (snap) => {
-      if (!snap.exists()) return;
-      const data = snap.data();
+  listen(doc(db, 'platformSettings', 'main'), (snap) => {
+    const data = snap.exists() ? snap.data() : {};
 
-      if (data.platformName) {
-        document.title = `${data.platformName} - المنصة التعليمية | دفعة 2026/2027`;
-        document.getElementById('headerPlatformName').textContent = data.platformName;
-        document.getElementById('footerBrandTitle').textContent = data.platformName;
-      }
-      if (data.tagline) {
-        document.getElementById('heroTagline').textContent = data.tagline;
-        document.getElementById('footerTaglineText').textContent = data.tagline;
-      }
-      if (data.welcomeText) {
-        document.getElementById('welcomeCustomMsg').textContent = data.welcomeText;
-      }
-      if (data.devName) document.getElementById('devNameText').textContent = data.devName;
-      if (data.devRole) document.getElementById('devRoleText').innerHTML = `<svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> ${data.devRole}`;
-      if (data.devUni) document.getElementById('devUniText').innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> ${data.devUni}`;
-      if (data.copyrightText) document.getElementById('copyrightNoticeText').innerHTML = data.copyrightText;
+    if (data.platformName) {
+      document.title = `${data.platformName} - المنصة التعليمية | دفعة 2026/2027`;
+      document.getElementById('headerPlatformName').textContent = data.platformName;
+      document.getElementById('footerBrandTitle').textContent = data.platformName;
+    }
+    if (data.tagline) {
+      document.getElementById('heroTagline').textContent = data.tagline;
+      document.getElementById('footerTaglineText').textContent = data.tagline;
+    }
+    if (data.welcomeText) document.getElementById('welcomeCustomMsg').textContent = data.welcomeText;
+    if (data.devName) document.getElementById('devNameText').textContent = data.devName;
+    if (data.devRole) document.getElementById('devRoleText').innerHTML = `<svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> ${escapeHtml(data.devRole)}`;
+    if (data.devUni) document.getElementById('devUniText').innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> ${escapeHtml(data.devUni)}`;
+    if (data.copyrightText) document.getElementById('copyrightNoticeText').innerHTML = nl2br(data.copyrightText);
 
-      const isMaint = !!data.maintenanceMode;
-      const isBlock = !!data.blockMode;
-      const isCopy = !!data.copyrightMode;
+    const isMaint = !!data.maintenanceMode;
+    const isBlock = !!data.blockMode;
+    const isCopy = !!data.copyrightMode;
 
-      const maintMsg = data.maintMsg || data.maintenanceMessage;
-      const blockMsg = data.blockMsg || data.blockMessage;
-      const copyMsg = data.copyMsg || data.copyrightMessage;
+    const maintMsg = data.maintMsg || data.maintenanceMessage;
+    const blockMsg = data.blockMsg || data.blockMessage;
+    const copyMsg = data.copyMsg || data.copyrightMessage;
+    if (maintMsg) document.getElementById('maintenanceMsg').textContent = maintMsg;
+    if (blockMsg) document.getElementById('blockMsg').textContent = blockMsg;
+    if (copyMsg) document.getElementById('copyrightMsg').textContent = copyMsg;
 
-      if (maintMsg) document.getElementById('maintenanceMsg').textContent = maintMsg;
-      if (blockMsg) document.getElementById('blockMsg').textContent = blockMsg;
-      if (copyMsg) document.getElementById('copyrightMsg').textContent = copyMsg;
+    const mode = isMaint ? 'maint' : isBlock ? 'block' : isCopy ? 'copy' : '';
+    const show = (id, on) => {
+      const el = document.getElementById(id);
+      const target = on ? 'flex' : 'none';
+      if (el.style.display !== target) el.style.display = target;
+    };
+    show('maintenanceOverlay', mode === 'maint');
+    show('blockOverlay', mode === 'block');
+    show('copyrightOverlay', mode === 'copy');
 
-      document.getElementById('maintenanceOverlay').style.display = isMaint ? 'flex' : 'none';
-      document.getElementById('blockOverlay').style.display = (!isMaint && isBlock) ? 'flex' : 'none';
-      document.getElementById('copyrightOverlay').style.display = (!isMaint && !isBlock && isCopy) ? 'flex' : 'none';
+    if (mode) {
+      if (videoModalBackdrop.classList.contains('open')) closeVideoModal();
+      closeProfileModal();
+      document.body.style.overflow = 'hidden';
+    } else if (!videoModalBackdrop.classList.contains('open')) {
+      document.body.style.overflow = '';
+      if (prevPlatformMode) showToast('success', 'عادت المنصة للعمل بشكل طبيعي');
+    }
+    prevPlatformMode = mode;
 
-      if (data.socialLinks) renderSocialIcons(data.socialLinks);
-    }, (err) => console.warn(err));
-  } catch(e) {}
+    renderSocialIcons(data.socialLinks || {});
+  }, 'settings');
 }
 
 function renderSocialIcons(links) {
@@ -2787,13 +3043,21 @@ function renderSocialIcons(links) {
     telegram: `<svg viewBox="0 0 24 24"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.855.075 1.644.357 1.874l4.171 3.15 1.354 4.063c.246.738.627 1.15 1.108 1.227.405.064.804-.095 1.082-.317l2.219-1.776 3.476 2.597c.245.184.626.433 1.14.433.353 0 .68-.138.938-.383.456-.435.584-.974.655-1.31l2.895-14.127c.096-.466.128-1.09-.305-1.6a1.458 1.458 0 0 0-1.413-.477zm.395 1.573l-2.895 14.1c-.043.21-.098.36-.138.404-.064-.015-.204-.07-.366-.19l-3.917-2.926-.382-.287-2.664 2.131.555-3.092 8.326-7.6c.26-.237.4-.355.417-.373-.034-.005-.278.012-.658.226L7.68 13.208l-4.167-3.148c.139-.053.29-.11.451-.17 1.59-.611 3.654-1.41 5.724-2.21l8.604-3.33c.183-.07.288-.083.32-.082z"/></svg>`,
     email: `<svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`
   };
-  Object.entries(links).forEach(([type, url]) => {
-    if (!url) return;
-    const finalUrl = type === 'email' && !url.startsWith('mailto:') ? `mailto:${url}` : url;
+  Object.entries(links || {}).forEach(([type, raw], i) => {
+    const val = (raw || '').toString().trim();
+    if (!val) return;
+    let finalUrl = '';
+    if (type === 'email') finalUrl = val.startsWith('mailto:') ? val : `mailto:${val}`;
+    else if (type === 'whatsapp' && /^[+\d\s-]{7,}$/.test(val)) finalUrl = `https://wa.me/${val.replace(/\D/g, '')}`;
+    else if (type === 'telegram' && val.startsWith('@')) finalUrl = `https://t.me/${val.slice(1)}`;
+    else finalUrl = safeUrl(val);
+    if (!finalUrl) return;
     const a = document.createElement('a');
     a.href = finalUrl;
     a.target = '_blank';
+    a.rel = 'noopener noreferrer';
     a.className = 'social-icon-circle';
+    a.style.animationDelay = `${i * 90}ms`;
     a.title = type;
     a.innerHTML = icons[type] || icons.email;
     container.appendChild(a);
@@ -2801,20 +3065,23 @@ function renderSocialIcons(links) {
 }
 
 function listenCourses() {
-  onSnapshot(collection(db, 'courses'), (snap) => {
+  listen(collection(db, 'courses'), (snap) => {
     const courses = [];
     snap.forEach(d => courses.push({ id: d.id, ...d.data() }));
-    allCourses = courses
-      .filter(c => c.published !== false)
-      .sort((a, b) => (parseInt(a.order) || 999) - (parseInt(b.order) || 999));
-    animateCount('statCourses', allCourses.length);
+    hiddenCourseIds = new Set(courses.filter(c => c.published === false).map(c => c.id));
+    allCourses = courses.filter(c => c.published !== false).sort(byOrder);
+    if (activeCourseFilter && !allCourses.some(c => c.id === activeCourseFilter)) activeCourseFilter = '';
+    updateStats();
     renderCoursesGrid(filterBySearch(allCourses, 'course'));
     renderVideoFilterPills();
-  }, (err) => console.warn(err));
+    applyVideoFilters();
+    renderAttachmentsGrid(filterBySearch(visibleAttachments(), 'attach'));
+  }, 'courses');
 }
 
 function renderCoursesGrid(courses) {
   const grid = document.getElementById('coursesGrid');
+  const animate = shouldAnimate('courses', courses);
   grid.innerHTML = '';
   if (!courses.length) {
     grid.innerHTML = `<div class="empty-state-box"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><p>لا توجد دورات منشورة حالياً</p></div>`;
@@ -2822,9 +3089,10 @@ function renderCoursesGrid(courses) {
   }
   courses.forEach((c, idx) => {
     const card = document.createElement('div');
-    card.className = 'course-card anim-item visible';
-    card.style.transitionDelay = `${idx * 60}ms`;
-    const title = escapeHtml(c.name || c.title || 'دورة تعليمية');
+    card.className = 'course-card' + (animate ? ' card-enter' : '');
+    card.style.setProperty('--i', Math.min(idx, 14));
+    const rawTitle = c.name || c.title || 'دورة تعليمية';
+    const title = escapeHtml(rawTitle);
     const desc = escapeHtml(c.description || 'محتوى شامل وشروحات مميزة');
     card.innerHTML = `
       <div class="course-top-row">
@@ -2834,14 +3102,14 @@ function renderCoursesGrid(courses) {
       <h3 class="course-title">${title}</h3>
       <p class="course-desc">${desc}</p>
       <div class="course-footer">
-        <div class="course-lessons-stat"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>${c.videoCount || 0} شروحات وتكليفات</span></div>
+        <div class="course-lessons-stat"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>${countCourseVideos(c.id)} شروحات وتكليفات</span></div>
         <div class="course-action-arrow" title="عرض دروس الدورة"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
       </div>
     `;
     card.addEventListener('click', () => {
       filterVideosByCourse(c.id);
       scrollToSection('videosSection');
-      showToast('info', `تم تحديد مسار: ${title}`);
+      showToast('info', `تم تحديد مسار: ${rawTitle}`);
     });
     grid.appendChild(card);
   });
@@ -2871,19 +3139,18 @@ window.filterVideosByCourse = function(courseId) {
 };
 
 function listenVideos() {
-  onSnapshot(collection(db, 'videos'), (snap) => {
+  listen(collection(db, 'videos'), (snap) => {
     const videos = [];
     snap.forEach(d => videos.push({ id: d.id, ...d.data() }));
-    allVideos = videos
-      .filter(v => v.published !== false)
-      .sort((a, b) => (parseInt(a.order) || 999) - (parseInt(b.order) || 999));
-    animateCount('statVideos', allVideos.length);
+    allVideos = videos.filter(v => v.published !== false).sort(byOrder);
+    updateStats();
+    renderCoursesGrid(filterBySearch(allCourses, 'course'));
     applyVideoFilters();
-  }, (err) => console.warn(err));
+  }, 'videos');
 }
 
 function applyVideoFilters() {
-  let filtered = allVideos;
+  let filtered = visibleVideos();
   if (activeCourseFilter) filtered = filtered.filter(v => v.courseId === activeCourseFilter);
   if (currentSearchTerm) filtered = filterBySearch(filtered, 'video');
   renderVideosGrid(filtered);
@@ -2891,6 +3158,7 @@ function applyVideoFilters() {
 
 function renderVideosGrid(videos) {
   const container = document.getElementById('videosList');
+  const animate = shouldAnimate('videos', videos);
   container.innerHTML = '';
   if (!videos.length) {
     container.innerHTML = `<div class="empty-state-box"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><polygon points="10 8 10 14 15 11"/></svg><p>لا توجد فيديوهات في هذا المسار حالياً</p></div>`;
@@ -2898,11 +3166,13 @@ function renderVideosGrid(videos) {
   }
   videos.forEach((v, idx) => {
     const card = document.createElement('div');
-    card.className = 'video-card-item anim-item visible';
-    card.style.transitionDelay = `${idx * 60}ms`;
-    const title = escapeHtml(v.title || 'فيديو تعليمي');
+    card.className = 'video-card-item' + (animate ? ' card-enter' : '');
+    card.style.setProperty('--i', Math.min(idx, 14));
+    const rawTitle = v.title || 'فيديو تعليمي';
+    const title = escapeHtml(rawTitle);
     const desc = escapeHtml(v.description || 'شرح عملي ومبسط لأهم المفاهيم والتكليفات');
-    const courseName = escapeHtml(v.courseName || 'مقرر عام');
+    const rawCourse = courseNameFor(v);
+    const courseName = escapeHtml(rawCourse);
     const playCount = v.playCount || 0;
     const rawUrl = v.driveUrl || v.url || v.videoUrl || '';
 
@@ -2924,23 +3194,24 @@ function renderVideosGrid(videos) {
         <p class="video-card-desc">${desc}</p>
       </div>
     `;
-    card.addEventListener('click', () => openVideoPlayer(v.id, rawUrl, title, v.courseId, courseName));
+    card.addEventListener('click', () => openVideoPlayer(v.id, rawUrl, rawTitle, v.courseId, rawCourse));
     container.appendChild(card);
   });
 }
 
 function listenAttachments() {
-  onSnapshot(collection(db, 'attachments'), (snap) => {
+  listen(collection(db, 'attachments'), (snap) => {
     const files = [];
     snap.forEach(d => files.push({ id: d.id, ...d.data() }));
     allAttachments = files.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    animateCount('statFiles', allAttachments.length);
-    renderAttachmentsGrid(filterBySearch(allAttachments, 'attach'));
-  }, (err) => console.warn(err));
+    updateStats();
+    renderAttachmentsGrid(filterBySearch(visibleAttachments(), 'attach'));
+  }, 'attachments');
 }
 
 function renderAttachmentsGrid(files) {
   const grid = document.getElementById('attachmentsGrid');
+  const animate = shouldAnimate('attachments', files);
   grid.innerHTML = '';
   if (!files.length) {
     grid.innerHTML = `<div class="empty-state-box"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg><p>لا توجد ملفات مرفقة حالياً</p></div>`;
@@ -2948,10 +3219,11 @@ function renderAttachmentsGrid(files) {
   }
   files.forEach((f, idx) => {
     const card = document.createElement('div');
-    card.className = 'attachment-card-box anim-item visible';
-    card.style.transitionDelay = `${idx * 60}ms`;
-    const name = escapeHtml(f.name || f.title || 'ملف تعليمي');
-    const url = f.url || f.fileUrl || '#';
+    card.className = 'attachment-card-box' + (animate ? ' card-enter' : '');
+    card.style.setProperty('--i', Math.min(idx, 14));
+    const rawName = f.name || f.title || 'ملف تعليمي';
+    const name = escapeHtml(rawName);
+    const url = safeUrl(f.url || f.fileUrl) || '#';
     const type = (f.type || 'pdf').toLowerCase();
     const course = allCourses.find(c => c.id === f.courseId);
     const courseTitle = escapeHtml(course?.name || f.description || 'مرفق تعليمي عام');
@@ -2979,8 +3251,8 @@ function renderAttachmentsGrid(files) {
     `;
     card.addEventListener('click', () => {
       if (url && url !== '#') {
-        window.open(url, '_blank');
-        showToast('success', `جاري فتح: ${name}`);
+        window.open(url, '_blank', 'noopener');
+        showToast('success', `جاري فتح: ${rawName}`);
       } else {
         showToast('error', 'رابط الملف غير متاح');
       }
@@ -3004,7 +3276,7 @@ function openVideoPlayer(videoId, rawUrl, title, courseId, courseName) {
   videoIframePlayer.src = embedUrl;
   videoModalBackdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
-  videoExternalOpenBtn.onclick = () => window.open(rawUrl, '_blank');
+  videoExternalOpenBtn.onclick = () => window.open(safeUrl(rawUrl) || rawUrl, '_blank', 'noopener');
 
   try { updateDoc(doc(db, 'videos', videoId), { playCount: increment(1) }).catch(() => {}); } catch(e) {}
   startWatchSession(videoId, title, courseId, courseName);
@@ -3028,11 +3300,13 @@ document.addEventListener('keydown', (e) => {
 async function startWatchSession(videoId, videoTitle, courseId, courseName) {
   endWatchSession();
   if (!currentStudent) return;
-  const sessionId = `${currentStudent.uid}_${videoId}_${Date.now()}`;
+  const uid = auth.currentUser && auth.currentUser.uid;
+  if (!uid) return;
+  const sessionId = `${uid}_${videoId}_${Date.now()}`;
   currentVideoSession = { sessionId, videoId, videoTitle, seconds: 0 };
   const payload = {
-    uid: currentStudent.uid,
-    userId: currentStudent.uid,
+    uid,
+    userId: uid,
     studentName: currentStudent.name,
     userName: currentStudent.name,
     videoId,
@@ -3047,8 +3321,12 @@ async function startWatchSession(videoId, videoTitle, courseId, courseName) {
   };
   try {
     await setDoc(doc(db, 'watchSessions', sessionId), payload);
+    if (!currentVideoSession || currentVideoSession.sessionId !== sessionId) {
+      updateDoc(doc(db, 'watchSessions', sessionId), { active: false, endedAt: serverTimestamp() }).catch(() => {});
+      return;
+    }
     heartbeatInterval = setInterval(async () => {
-      if (!currentVideoSession) return;
+      if (!currentVideoSession || document.hidden) return;
       currentVideoSession.seconds += 15;
       try {
         await updateDoc(doc(db, 'watchSessions', sessionId), {
@@ -3058,7 +3336,7 @@ async function startWatchSession(videoId, videoTitle, courseId, courseName) {
         });
       } catch(e) {}
     }, 15000);
-  } catch(e) {}
+  } catch(e) { console.warn('watch session:', e); }
 }
 
 function endWatchSession() {
@@ -3067,87 +3345,150 @@ function endWatchSession() {
     heartbeatInterval = null;
   }
   if (currentVideoSession) {
-    try {
-      updateDoc(doc(db, 'watchSessions', currentVideoSession.sessionId), {
-        active: false,
-        endedAt: serverTimestamp()
-      }).catch(() => {});
-    } catch(e) {}
+    const id = currentVideoSession.sessionId;
     currentVideoSession = null;
+    try {
+      updateDoc(doc(db, 'watchSessions', id), { active: false, endedAt: serverTimestamp() }).catch(() => {});
+    } catch(e) {}
   }
 }
 
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden && currentVideoSession) endWatchSession();
-});
-
-async function syncStudentActivity() {
-  if (!currentStudent || currentStudent.uid.startsWith('offline-')) return;
-  try {
-    await updateDoc(doc(db, 'users', currentStudent.uid), {
-      lastSeen: serverTimestamp(),
-      visits: increment(1)
-    });
-  } catch(e) {}
-}
+window.addEventListener('pagehide', endWatchSession);
 
 const searchInput = document.getElementById('globalSearchInput');
 const searchClearBtn = document.getElementById('searchClearBtn');
 
+function renderAllLists() {
+  renderCoursesGrid(filterBySearch(allCourses, 'course'));
+  applyVideoFilters();
+  renderAttachmentsGrid(filterBySearch(visibleAttachments(), 'attach'));
+}
+
 searchInput.addEventListener('input', (e) => {
   currentSearchTerm = e.target.value.trim().toLowerCase();
   searchClearBtn.style.display = currentSearchTerm ? 'grid' : 'none';
-  renderCoursesGrid(filterBySearch(allCourses, 'course'));
-  applyVideoFilters();
-  renderAttachmentsGrid(filterBySearch(allAttachments, 'attach'));
+  renderAllLists();
 });
 
 window.clearSearch = function() {
   searchInput.value = '';
   currentSearchTerm = '';
   searchClearBtn.style.display = 'none';
-  renderCoursesGrid(allCourses);
-  applyVideoFilters();
-  renderAttachmentsGrid(allAttachments);
+  renderAllLists();
+  searchInput.focus();
 };
 
 function filterBySearch(items, type) {
   if (!currentSearchTerm) return items;
   return items.filter(item => {
-    const name = (item.name || item.title || '').toLowerCase();
-    const desc = (item.description || '').toLowerCase();
-    const course = (item.courseName || '').toLowerCase();
-    return name.includes(currentSearchTerm) || desc.includes(currentSearchTerm) || course.includes(currentSearchTerm);
+    const course = item.courseName || (allCourses.find(c => c.id === item.courseId) || {}).name || '';
+    return [item.name, item.title, item.description, course]
+      .some(x => (x || '').toString().toLowerCase().includes(currentSearchTerm));
   });
 }
 
-function escapeHtml(str) {
-  if (!str) return '';
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+/* ================================================================
+   VISUAL EFFECTS
+   ================================================================ */
+const TILT_SELECTOR = '.course-card, .video-card-item, .attachment-card-box';
+let tiltCard = null;
+function resetTilt(card) { if (!card) return; card.style.transform = ''; card.style.transition = ''; }
+
+function initVisualEffects() {
+  const bar = document.createElement('div');
+  bar.id = 'scrollProgress';
+  document.body.appendChild(bar);
+
+  if (prefersReduced) return;
+
+  const hero = document.getElementById('heroSection');
+  if (hero) {
+    const wrap = document.createElement('div');
+    wrap.className = 'hero-particles';
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('span');
+      const size = 4 + Math.random() * 9;
+      p.className = 'hero-particle';
+      p.style.cssText = `left:${Math.random() * 100}%;width:${size}px;height:${size}px;animation-duration:${9 + Math.random() * 10}s;animation-delay:${-Math.random() * 14}s`;
+      wrap.appendChild(p);
+    }
+    hero.prepend(wrap);
+  }
+
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      const card = e.target.closest ? e.target.closest(TILT_SELECTOR) : null;
+      if (tiltCard && tiltCard !== card) resetTilt(tiltCard);
+      tiltCard = card;
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transition = 'transform .12s ease-out, box-shadow .35s, border-color .35s';
+      card.style.transform = `perspective(900px) rotateX(${(-y * 7).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg) translateY(-6px)`;
+    });
+    document.addEventListener('mouseleave', () => { resetTilt(tiltCard); tiltCard = null; });
+  }
+}
+
+window.addEventListener('online', () => showToast('success', 'عاد الاتصال بالإنترنت'));
+window.addEventListener('offline', () => showToast('warning', 'لا يوجد اتصال بالإنترنت حالياً'));
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeProfileModal(); closeCopyrightModal(); }
+  const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+  if (e.key === '/' && tag !== 'input' && tag !== 'textarea') {
+    e.preventDefault();
+    scrollToSection('videosSection');
+    setTimeout(() => searchInput.focus(), 350);
+  }
+});
+
+function renderSkeletons() {
+  const sk = (n) => Array.from({ length: n }, () => '<div class="skeleton-card"></div>').join('');
+  ['coursesGrid', 'videosList', 'attachmentsGrid'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.children.length) el.innerHTML = sk(3);
+  });
+}
+
+/* ================================================================
+   BOOTSTRAP
+   ================================================================ */
+function hideSplash() {
+  const splash = document.getElementById('splashScreen');
+  if (splash) {
+    splash.classList.add('fade-out');
+    setTimeout(() => splash.remove(), 500);
+  }
+  refreshAnimObservers();
 }
 
 async function bootstrapPlatform() {
   const isRegistered = checkStudentRegistration();
   if (!isRegistered) displayLockState();
-  else syncStudentActivity();
+
+  initVisualEffects();
+  renderSkeletons();
+
+  /* Make sure we hold an (anonymous) auth session BEFORE listening, so Firestore rules see a signed-in user */
+  try {
+    await Promise.race([
+      ensureAuth(),
+      new Promise((_, rej) => setTimeout(() => rej(new Error('auth-timeout')), 5000))
+    ]);
+  } catch (e) { console.warn('Auth bootstrap:', e); }
+
+  onAuthStateChanged(auth, (user) => { if (user) currentUser = user; });
 
   listenPlatformSettings();
   listenCourses();
   listenVideos();
   listenAttachments();
 
-  onAuthStateChanged(auth, (user) => { if (user) currentUser = user; });
+  if (isRegistered) reconcileStudent();
 
-  setTimeout(() => {
-    const splash = document.getElementById('splashScreen');
-    if (splash) {
-      splash.classList.add('fade-out');
-      setTimeout(() => splash.remove(), 500);
-    }
-    refreshAnimObservers();
-  }, 750);
+  setTimeout(hideSplash, 650);
 }
 
 bootstrapPlatform();
