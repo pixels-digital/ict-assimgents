@@ -1757,7 +1757,95 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   border: 0;
+  background: #000;
 }
+
+/* ===== الفيديو يظهر كامل بدون قص (عرض عادي) =====
+   النافذة بتتقاس على حسب ارتفاع الشاشة عشان الفيديو 16:9 ما يتقصش */
+.video-modal-window {
+  width: min(960px, 100%, calc((100vh - 200px) * 16 / 9));
+  width: min(960px, 100%, calc((100dvh - 200px) * 16 / 9));
+  min-width: min(100%, 320px);
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  .video-modal-backdrop { padding: 6px; }
+  .video-modal-top { padding: 6px 12px; }
+  .video-modal-footer-note { display: none; }
+  .video-modal-window {
+    width: min(100%, calc((100vh - 64px) * 16 / 9));
+    width: min(100%, calc((100dvh - 64px) * 16 / 9));
+  }
+}
+
+/* زر التكبير */
+.video-fs-btn:hover { background: var(--border-light); color: var(--teal); transform: none; }
+
+/* ===== وضع التكبير: الفيديو بالعرض ظاهر بالكامل (letterbox) ===== */
+.video-modal-window.is-expanded,
+.video-modal-window:fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  transform: none !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 3100;
+}
+.video-modal-window:-webkit-full-screen {
+  width: 100vw; height: 100vh; max-width: none; border-radius: 0; background: #000;
+  align-items: center; justify-content: center;
+}
+.video-modal-window.is-expanded .video-modal-footer-note,
+.video-modal-window:fullscreen .video-modal-footer-note { display: none; }
+.video-modal-window.is-expanded .video-modal-top,
+.video-modal-window:fullscreen .video-modal-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 5;
+  background: rgba(0,0,0,.55);
+  border: 0;
+  padding: 8px 14px;
+  padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s;
+}
+.video-modal-window.is-expanded .video-modal-top:hover,
+.video-modal-window.is-expanded .video-modal-top:focus-within,
+.video-modal-window:fullscreen .video-modal-top:hover,
+.video-modal-window:fullscreen .video-modal-top:focus-within { opacity: 1; pointer-events: auto; }
+.video-modal-window.is-expanded .video-modal-top h3,
+.video-modal-window:fullscreen .video-modal-top h3 { color: #fff; }
+.video-modal-window.is-expanded .video-frame-aspect,
+.video-modal-window:fullscreen .video-frame-aspect {
+  width: min(100vw, calc(100vh * 16 / 9));
+  width: min(100dvw, calc(100dvh * 16 / 9));
+  max-height: 100dvh;
+  aspect-ratio: 16/9;
+}
+/* زر صغير ثابت للخروج من التكبير */
+.video-exit-fs {
+  display: none;
+  position: absolute;
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  right: 12px;
+  z-index: 6;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  place-items: center;
+}
+.video-exit-fs svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+.video-modal-window.is-expanded .video-exit-fs,
+.video-modal-window:fullscreen .video-exit-fs { display: grid; }
 .video-modal-footer-note {
   padding: 14px 22px;
   background: var(--gradient-card);
@@ -1961,116 +2049,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 .dev-photo-wrap.no-photo { display: grid; place-items: center; background: var(--gradient-hero); color: #fff; font-size: 4rem; font-weight: 800; min-height: 220px; }
 .dev-photo-wrap.no-photo::after { content: 'ز'; }
-
-/* ---- Video player fullscreen ---- */
-.modal-top-btn.fs-btn:hover { background: var(--teal); color: #fff; transform: scale(1.08); }
-.video-modal-window.is-full,
-.video-modal-window:fullscreen {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  max-width: none;
-  border-radius: 0;
-  border: 0;
-  transform: none;
-  z-index: 1;
-}
-.video-modal-window.is-full .video-frame-aspect,
-.video-modal-window:fullscreen .video-frame-aspect {
-  aspect-ratio: auto;
-  flex: 1;
-  min-height: 0;
-  height: auto;
-}
-.video-modal-window.is-full .video-modal-footer-note,
-.video-modal-window:fullscreen .video-modal-footer-note { display: none; }
-.video-modal-window.is-full .video-modal-top,
-.video-modal-window:fullscreen .video-modal-top { padding: 8px 14px; }
-@media (orientation: landscape) and (max-height: 500px) {
-  .video-modal-backdrop { padding: 0; }
-  .video-modal-window { max-width: none; border-radius: 0; height: 100vh; height: 100dvh; }
-  .video-modal-window .video-frame-aspect { aspect-ratio: auto; flex: 1; min-height: 0; }
-  .video-modal-window .video-modal-footer-note { display: none; }
-  .video-modal-window .video-modal-top { padding: 6px 12px; }
-}
-
-/* ================================================================
-   MOBILE SIZE FIT (phones only - no desktop changes)
-   ================================================================ */
-@media (max-width: 600px) {
-  html { font-size: 15px; }
-  :root { --header-height: 62px; }
-  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
-  .main-header { gap: 8px; padding: 0 12px; }
-  .header-logo { font-size: 1.1rem; gap: 8px; }
-  .logo-icon-wrap { width: 34px; height: 34px; border-radius: 10px; }
-  .logo-icon-wrap svg { width: 18px; height: 18px; }
-  .header-actions { gap: 6px; }
-  .icon-btn { width: 36px; height: 36px; }
-  .icon-btn svg { width: 17px; height: 17px; }
-  .chip-avatar { width: 30px; height: 30px; }
-  .admin-link-btn { padding: 7px; }
-
-  .hero-section { padding-left: 14px; padding-right: 14px; padding-bottom: 44px; }
-  .hero-badge { font-size: 0.78rem; padding: 7px 14px; margin-bottom: 16px; text-align: center; }
-  .hero-title { font-size: 1.9rem; }
-  .hero-subtitle { font-size: 0.95rem; margin-bottom: 24px; }
-  .hero-actions-row { gap: 10px; margin-bottom: 32px; }
-  .hero-actions-row .btn-primary, .hero-actions-row .btn-secondary {
-    width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.98rem;
-  }
-  .hero-stats-wrap { padding: 14px 10px; gap: 8px; }
-  .stat-icon-pill { width: 30px; height: 30px; }
-  .hero-stat-value { font-size: 1.55rem; }
-  .hero-stat-label { font-size: 0.72rem; }
-
-  .container { padding: 0 14px; }
-  .section { padding: 36px 0; }
-  .search-filter-section { margin: -18px auto 26px; }
-  .search-box-card { padding: 8px 10px; gap: 8px; }
-  .search-input-field { font-size: 0.92rem; min-width: 0; }
-
-  .welcome-banner, .voluntary-banner-box { flex-direction: column; text-align: center; padding: 18px 16px; gap: 12px; }
-  .welcome-icon-box { width: 48px; height: 48px; }
-
-  .cards-grid, .videos-grid-wrap, .attachments-grid { grid-template-columns: 1fr; gap: 16px; }
-  .course-card { padding: 18px; }
-  .filter-pill { font-size: 0.8rem; padding: 6px 12px; }
-
-  .about-initiative-box { padding: 26px 16px; border-radius: var(--radius-lg); }
-  .about-body-text { text-align: start; font-size: 0.93rem; }
-  .about-hadith-pill { border-radius: var(--radius-md); text-align: center; padding: 10px 14px; font-size: 0.88rem; }
-  .about-features-row { grid-template-columns: 1fr; }
-
-  .dev-card-wrapper { padding: 24px 16px; border-radius: var(--radius-lg); }
-  .dev-pill-role { font-size: 0.76rem; text-align: center; }
-  .dev-bio { font-size: 0.9rem; }
-  .dev-entity-tag { font-size: 0.78rem; }
-  .dev-dua-card { padding: 14px 16px; font-size: 0.88rem; }
-
-  .main-footer { padding: 40px 14px 20px; }
-  .footer-bottom-bar { font-size: 0.8rem; }
-
-  .back-to-top-fab { bottom: 76px; left: 12px; width: 40px; height: 40px; }
-  .mob-nav-item { padding: 6px 6px; font-size: 0.68rem; }
-
-  .lock-card-box { padding: 28px 18px; border-radius: var(--radius-lg); }
-  .lock-input-control { font-size: 0.95rem; }
-  .video-modal-backdrop { padding: 10px; }
-  .video-modal-top { padding: 12px 14px; }
-  .video-modal-title-row h3 { font-size: 0.98rem; }
-  .video-modal-footer-note { padding: 10px 14px; font-size: 0.8rem; }
-  .profile-modal-box { padding: 24px 16px; }
-  .policy-modal-box { padding: 22px 16px; }
-  .state-big-icon { width: 72px; height: 72px; }
-}
-@media (max-width: 380px) {
-  .hero-title { font-size: 1.65rem; }
-  .hero-stat-label { font-size: 0.66rem; }
-  .header-logo { font-size: 1rem; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .card-enter, .hero-badge, .hero-title, .hero-subtitle, .hero-actions-row, .hero-stat-card,
@@ -2504,16 +2482,18 @@ h1, h2, h3, h4, h5, h6 {
 
 <!-- VIDEO PLAYER MODAL -->
 <div class="video-modal-backdrop" id="videoModalBackdrop">
-  <div class="video-modal-window">
+  <div class="video-modal-window" id="videoModalWindow">
+    <button class="video-exit-fs" id="videoExitFsBtn" type="button" title="تصغير" aria-label="تصغير">
+      <svg viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+    </button>
     <div class="video-modal-top">
       <div class="video-modal-title-row">
         <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         <h3 id="videoModalTitle">مشغل الفيديو التعليمي</h3>
       </div>
       <div class="video-modal-actions">
-        <button class="modal-top-btn fs-btn" id="videoFullscreenBtn" onclick="toggleVideoFullscreen()" title="ملء الشاشة" aria-label="ملء الشاشة">
-          <svg viewBox="0 0 24 24" id="fsIconEnter"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-          <svg viewBox="0 0 24 24" id="fsIconExit" style="display:none"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+        <button class="modal-top-btn video-fs-btn" id="videoFsBtn" type="button" title="تكبير الفيديو" aria-label="تكبير الفيديو">
+          <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
         </button>
         <button class="modal-top-btn" id="videoExternalOpenBtn" title="فتح في نافذة مستقلة">
           <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -2525,7 +2505,7 @@ h1, h2, h3, h4, h5, h6 {
     </div>
 
     <div class="video-frame-aspect">
-      <iframe id="videoIframePlayer" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+      <iframe id="videoIframePlayer" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen webkitallowfullscreen mozallowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
 
     <div class="video-modal-footer-note">
@@ -3321,42 +3301,43 @@ function openVideoPlayer(videoId, rawUrl, title, courseId, courseName) {
   showToast('info', `نتمنى لك مشاهدة مفيدة يا زميلنا العزيز`);
 }
 
-const videoModalWindow = document.querySelector('.video-modal-window');
-function syncFullscreenUi() {
-  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
-  const on = fsEl === videoModalWindow || videoModalWindow.classList.contains('pseudo-full');
-  videoModalWindow.classList.toggle('is-full', on);
-  document.getElementById('fsIconEnter').style.display = on ? 'none' : 'block';
-  document.getElementById('fsIconExit').style.display = on ? 'block' : 'none';
-}
-window.toggleVideoFullscreen = function() {
-  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
-  if (fsEl || videoModalWindow.classList.contains('pseudo-full')) {
-    videoModalWindow.classList.remove('pseudo-full');
-    if (fsEl) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    syncFullscreenUi();
-    return;
-  }
-  const req = videoModalWindow.requestFullscreen || videoModalWindow.webkitRequestFullscreen;
-  if (req) {
-    Promise.resolve(req.call(videoModalWindow)).catch(() => {
-      videoModalWindow.classList.add('pseudo-full'); syncFullscreenUi();
-    });
-  } else {
-    /* iPhone Safari: no element fullscreen, so fill the viewport instead */
-    videoModalWindow.classList.add('pseudo-full');
-    syncFullscreenUi();
-  }
-};
-document.addEventListener('fullscreenchange', syncFullscreenUi);
-document.addEventListener('webkitfullscreenchange', syncFullscreenUi);
+const videoModalWindow = document.getElementById('videoModalWindow');
+const videoFsBtn = document.getElementById('videoFsBtn');
+const videoExitFsBtn = document.getElementById('videoExitFsBtn');
 
-window.closeVideoModal = function() {
-  if (document.fullscreenElement || document.webkitFullscreenElement) {
+async function expandVideo() {
+  videoModalWindow.classList.add('is-expanded');
+  try {
+    if (videoModalWindow.requestFullscreen) await videoModalWindow.requestFullscreen({ navigationUI: 'hide' });
+    else if (videoModalWindow.webkitRequestFullscreen) videoModalWindow.webkitRequestFullscreen();
+  } catch (e) {}
+  try { if (screen.orientation && screen.orientation.lock) await screen.orientation.lock('landscape'); } catch (e) {}
+}
+function collapseVideo() {
+  videoModalWindow.classList.remove('is-expanded');
+  try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEl) {
     try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (e) {}
   }
-  videoModalWindow.classList.remove('pseudo-full');
-  syncFullscreenUi();
+}
+videoFsBtn.addEventListener('click', () => {
+  videoModalWindow.classList.contains('is-expanded') ? collapseVideo() : expandVideo();
+});
+videoExitFsBtn.addEventListener('click', collapseVideo);
+function onFsChange() {
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (!fsEl && videoModalWindow.classList.contains('is-expanded') && !videoModalWindow._pseudo) {
+    // المستخدم خرج من ملء الشاشة بالـ Esc
+    videoModalWindow.classList.remove('is-expanded');
+    try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+  }
+}
+document.addEventListener('fullscreenchange', onFsChange);
+document.addEventListener('webkitfullscreenchange', onFsChange);
+
+window.closeVideoModal = function() {
+  collapseVideo();
   videoModalBackdrop.classList.remove('open');
   document.body.style.overflow = '';
   setTimeout(() => { videoIframePlayer.src = ''; }, 350);
